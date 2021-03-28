@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>What coins do you want to track?</h1>
+    <ul class="coins">
+      <% for(let i = 0; i < coinInfo.length; i++) {%>
+      <li class="coin">
+        <span><%= coinInfo[i].name %></span>
+        <span><%= coinInfo[i].price %></span>
+        <span class="del">delete</span>
+      </li>
+      <% } %>
+    </ul>
+
+    <h2>Add A Coin:</h2>
+
+    <form action="/addCoin" method="POST">
+      <input type="text" placeholder="Coin Name" name="name" />
+      <input type="text" placeholder="Coin Price" name="price" />
+      <button type="submit">Add!</button>
+    </form>
+
+    <script src="C:\Users\Justin\Documents\Work\Programming\Review\crud-review-p2\server\public\main.js"></script>
+  </body>
+</html>
