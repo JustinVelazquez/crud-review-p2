@@ -1,13 +1,15 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 
 const PORT = 3001;
 
 let db,
-  dbURL =
-    'mongodb+srv://yoda:TheForce231@cluster0.uyfth.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  dbURL = process.env.MONGODB_URL;
 dbName = 'crypto';
 
 // MongoClient.connect(dbURL, { useUnifiedTopology: true }).then((client) => {
@@ -35,7 +37,7 @@ app.get('/', (req, res) => {
     .toArray()
     .then((data) => {
       res.render('index.ejs', { coinInfo: data });
-      console.log(data)
+      console.log(data);
     })
     .catch((error) => console.log(error));
 });
@@ -50,22 +52,24 @@ app.get('/', (req, res) => {
 // })
 
 app.post('/addCoin', (req, res) => {
-    db.collection('coins').insertOne(req.body)
-    .then(result => {
-        console.log('Coin Added')
-        res.redirect('/')
+  db.collection('coins')
+    .insertOne(req.body)
+    .then((result) => {
+      console.log('Coin Added');
+      res.redirect('/');
     })
-    .catch(error => console.log(error))
-})
+    .catch((error) => console.log(error));
+});
 
 app.delete('/deleteCoin', (req, res) => {
-    db.collection('coins').deleteOne({ name: req.body.coinNameS})
-    .then(result => {
-        console.log('Coin Deleted')
-        response.json('Coin Deleted')
+  db.collection('coins')
+    .deleteOne({ name: req.body.coinNameS })
+    .then((result) => {
+      console.log('Coin Deleted');
+      response.json('Coin Deleted');
     })
-    .catch(error => console.log(error))
-})
+    .catch((error) => console.log(error));
+});
 
 app.listen(PORT, () => {
   console.log(`Listening in on port ${PORT}`);
