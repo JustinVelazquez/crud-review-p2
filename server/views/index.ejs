@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
   </head>
   <body>
     <h1>What coins do you want to track?</h1>
@@ -13,7 +17,9 @@
       <li class="coin">
         <span><%= coinInfo[i].name %></span>
         <span><%= coinInfo[i].price %></span>
-        <span class="del">delete</span>
+        <span><%= coinInfo[i].likes %></span>
+        <span class="fa fa-thumbs-up"></span>
+        <span class="fa fa-trash"></span>
       </li>
       <% } %>
     </ul>
@@ -26,6 +32,6 @@
       <button type="submit">Add!</button>
     </form>
 
-    <script src="C:\Users\Justin\Documents\Work\Programming\Review\crud-review-p2\server\public\main.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>

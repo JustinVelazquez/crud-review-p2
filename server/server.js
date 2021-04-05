@@ -34,6 +34,7 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   db.collection('coins')
     .find()
+    .sort({ likes: -1 })
     .toArray()
     .then((data) => {
       res.render('index.ejs', { coinInfo: data });
@@ -51,14 +52,28 @@ app.get('/', (req, res) => {
 //     .catch(error => console.error(error))
 // })
 
+// app.post('/addCoin', (req, res) => {
+//   db.collection('coins')
+//     .insertOne({
+//       name: req.body.coinNameS,
+//       price: req.body.coinPriceS,
+//       likes: 0,
+//     })
+//     .then((result) => {
+//       console.log('Coin Added');
+//       res.redirect('/');
+//     })
+//     .catch((error) => console.log(error));
+// });
+
 app.post('/addCoin', (req, res) => {
   db.collection('coins')
-    .insertOne(req.body)
+    .insertOne({ name: req.body.name, price: req.body.price, likes: 0 })
     .then((result) => {
       console.log('Coin Added');
       res.redirect('/');
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 });
 
 app.delete('/deleteCoin', (req, res) => {
@@ -66,11 +81,36 @@ app.delete('/deleteCoin', (req, res) => {
     .deleteOne({ name: req.body.coinNameS })
     .then((result) => {
       console.log('Coin Deleted');
-      response.json('Coin Deleted');
+      res.json('Coin Deleted');
     })
     .catch((error) => console.log(error));
 });
 
 app.listen(PORT, () => {
   console.log(`Listening in on port ${PORT}`);
+});
+
+app.put('/updateLikes', (req, res) => {
+  db.collection('coins')
+    .updateOne(
+      {
+        name: req.body.coinNameS,
+        price: req.body.coinPriceS,
+        likes: req.body.coinLikesS,
+      },
+      {
+        $set: {
+          likes: req.body.coinLikesS + 1,
+        },
+      },
+      {
+        sort: { _id: -1 },
+        //upsert: true,
+      }
+    )
+    .then((result) => {
+      console.log('Added one like');
+      res.json('Like Added');
+    })
+    .catch((error) => console.log(error));
 });
